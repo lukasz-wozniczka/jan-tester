@@ -149,3 +149,4 @@ fabric.properties
 *.iml
 
 .env
+**ProjectBuildInfo.java
