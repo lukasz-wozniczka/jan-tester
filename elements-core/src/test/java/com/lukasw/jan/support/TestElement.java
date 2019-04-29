@@ -1,15 +1,19 @@
 package com.lukasw.jan.support;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.lukasw.jan.AbstractElement;
-import com.lukasw.jan.ElementContext;
+import com.lukasw.jan.BaseContext;
+import org.openqa.selenium.WebElement;
 
 import javax.annotation.Nonnull;
 
-public class TestElement extends AbstractElement<TestElement> {
+public class TestElement extends AbstractElement {
 
-    @VisibleForTesting
-    public TestElement(@Nonnull final ElementContext<TestElement> elementContext) {
-        super(elementContext);
+    public TestElement(@Nonnull final WebElement webElement, @Nonnull final BaseContext baseContext) {
+        super(webElement, baseContext);
+    }
+
+    @Override
+    public String getDescription() {
+        return "Test element";
     }
 }

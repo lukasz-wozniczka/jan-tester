@@ -14,9 +14,8 @@ public class SimpleElementFactory implements ElementFactory {
     }
 
     @Override
-    public <T extends AbstractElement<T>> T findBy(final AbstractBy<T> by) {
+    public <T extends AbstractElement> T findBy(final AbstractBy<T> by) {
         final WebElement webElement = this.baseContext.webDriver().findElement(by.getWrapped());
-        final ElementContext<T> elementContext = new DefaultElementContext<>(webElement, this.baseContext);
-        return by.createElement(elementContext);
+        return by.createElement(webElement, this.baseContext);
     }
 }

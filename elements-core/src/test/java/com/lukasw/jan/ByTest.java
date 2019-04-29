@@ -25,7 +25,7 @@ public class ByTest {
         } catch (final Exception e) {
             //then
             assertThat(e, instanceOf(NullPointerException.class));
-            assertThat(e.getMessage(), equalTo(format("Exception while trying to create an instance of the %s, by argument cannot be null.", TestBy.class.getSimpleName())));
+            assertThat(e.getMessage(), equalTo(format("Cannot create instance of com.lukasw.jan.support.TestBy, argument by is null.", TestBy.class.getName())));
         }
     }
 
@@ -39,6 +39,6 @@ public class ByTest {
 
         //then
         assertThat(testBy.getWrapped(), sameInstance(by));
-        assertThat(testBy.getDescription(), equalTo(TestBy.class.getSimpleName()));
+        assertThat(testBy.getDescription(), equalTo("Test by"));
     }
 }

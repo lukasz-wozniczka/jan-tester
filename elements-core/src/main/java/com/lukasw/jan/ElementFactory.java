@@ -13,6 +13,6 @@ interface ElementFactory {
      * @return the firs matching element of type {@code T}
      * @throws org.openqa.selenium.NoSuchElementException If no matching elements are found
      */
-    <T extends AbstractElement<T>> T findBy(final AbstractBy<T> by);
+    <T extends AbstractElement> T findBy(final AbstractBy<T> by);
 
 }
