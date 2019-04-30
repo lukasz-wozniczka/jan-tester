@@ -38,7 +38,7 @@ public class ElementFactoryTest {
 
     @BeforeMethod
     public void beforeMethod() {
-        reset(webDriver, webElement);
+        reset(this.webDriver, this.webElement);
         final BaseContext baseContext = new TestBaseContext(this.webDriver);
         this.sut = new SimpleElementFactory(baseContext);
     }
@@ -48,7 +48,7 @@ public class ElementFactoryTest {
         // given
 
         final By locator = By.id("id");
-        when(this.webDriver.findElement(locator)).thenReturn(webElement);
+        when(this.webDriver.findElement(locator)).thenReturn(this.webElement);
         final TestBy by = TestBy.id("id");
 
         // when
@@ -56,7 +56,7 @@ public class ElementFactoryTest {
 
         // then
         assertThat(element, notNullValue(TestElement.class));
-        assertThat(element.webElement(), sameInstance(webElement));
+        assertThat(element.webElement(), sameInstance(this.webElement));
     }
 
     @Test

@@ -2,8 +2,9 @@ package com.lukasw.jan.support;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.lukasw.jan.AbstractBy;
-import com.lukasw.jan.ElementContext;
+import com.lukasw.jan.BaseContext;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import javax.annotation.Nonnull;
 
@@ -25,7 +26,12 @@ public class TestBy extends AbstractBy<TestElement> {
     }
 
     @Override
-    protected TestElement createElement(final ElementContext<TestElement> elementContext) {
-        return new TestElement(elementContext);
+    protected TestElement createElement(final WebElement webElement, final BaseContext baseContext) {
+        return new TestElement(webElement, baseContext);
+    }
+
+    @Override
+    public String getDescription() {
+        return "Test by";
     }
 }

@@ -4,20 +4,17 @@ import org.openqa.selenium.WebElement;
 
 import javax.annotation.Nonnull;
 
-import static java.lang.String.format;
-import static java.util.Objects.requireNonNull;
-
 /**
- * Abstract element class to hold {@link ElementContext} and define base methods for specific elements.
- *
- * @param <T> the concrete sub type of {@link AbstractElement}
+ * Abstract element class to wrap {@link WebElement} and define base methods for specific elements.
  */
-public class AbstractElement<T extends AbstractElement<T>> {
+public abstract class AbstractElement implements HasDescription {
 
-    private final ElementContext<T> elementContext;
+    private final WebElement webElement;
+    private final BaseContext baseContext;
 
-    protected AbstractElement(@Nonnull final ElementContext<T> elementContext) {
-        this.elementContext = requireNonNull(elementContext, format("Exception while trying to create an instance of the %s, elementContext argument cannot be null.", getClass().getSimpleName()));
+    public AbstractElement(@Nonnull final WebElement webElement, @Nonnull final BaseContext baseContext) {
+        this.webElement = Arguments.argumentNotNull(webElement, "webElement", getClass());
+        this.baseContext = Arguments.argumentNotNull(baseContext, "baseContext", getClass());
     }
 
     /**
@@ -26,6 +23,16 @@ public class AbstractElement<T extends AbstractElement<T>> {
      * @return WebElement
      */
     protected final WebElement webElement() {
-        return this.elementContext.webElement();
+        return this.webElement;
+    }
+
+    /**
+     * Get the tag name of this element. <b>Not</b> the value of the name attribute: will return
+     * <code>"input"</code> for the element <code>&lt;input name="foo" /&gt;</code>.
+     *
+     * @return The tag name of this element.
+     */
+    public String getTagName() {
+        return this.webElement.getTagName();
     }
 }
