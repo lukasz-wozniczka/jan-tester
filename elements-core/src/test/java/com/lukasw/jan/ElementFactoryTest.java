@@ -17,7 +17,6 @@ import org.testng.annotations.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
@@ -56,7 +55,6 @@ public class ElementFactoryTest {
 
         // then
         assertThat(element, notNullValue(TestElement.class));
-        assertThat(element.webElement(), sameInstance(this.webElement));
     }
 
     @Test

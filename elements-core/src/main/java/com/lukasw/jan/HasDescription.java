@@ -1,14 +1,15 @@
 package com.lukasw.jan;
 
 /**
- * Force the type to provide description of the element that can be useful for documentation or log purpose.
+ * Provide description of the element. Can be useful for documentation or log purpose.
  */
+@FunctionalInterface
 public interface HasDescription {
 
     /**
-     * Get human readable type description.
+     * Get human readable element description.
      *
-     * @return type description
+     * @return element description
      */
     String getDescription();
 }

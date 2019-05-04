@@ -6,10 +6,16 @@ import org.openqa.selenium.WebElement;
 
 import javax.annotation.Nonnull;
 
-public class TestElement extends AbstractElement {
+public class TestElement extends AbstractElement<TestActions> implements TestActions {
+
 
     public TestElement(@Nonnull final WebElement webElement, @Nonnull final BaseContext baseContext) {
         super(webElement, baseContext);
+    }
+
+    @Override
+    protected TestActions getElementActions() {
+        return this;
     }
 
     @Override

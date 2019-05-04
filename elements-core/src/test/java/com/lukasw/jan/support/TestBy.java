@@ -27,6 +27,7 @@ public class TestBy extends AbstractBy<TestElement> {
 
     @Override
     protected TestElement createElement(final WebElement webElement, final BaseContext baseContext) {
+
         return new TestElement(webElement, baseContext);
     }
 

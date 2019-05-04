@@ -5,9 +5,9 @@ import org.openqa.selenium.WebElement;
 import javax.annotation.Nonnull;
 
 /**
- * Abstract element class to wrap {@link WebElement} and define base methods for specific elements.
+ * Abstract element to wrap {@link WebElement} and define common actions for all types of element.
  */
-public abstract class AbstractElement implements HasDescription {
+public abstract class AbstractElement<T extends ElementActions<T>> implements HasDescription, ElementActions<T> {
 
     private final WebElement webElement;
     private final BaseContext baseContext;
@@ -18,21 +18,36 @@ public abstract class AbstractElement implements HasDescription {
     }
 
     /**
-     * Hold underlying {@link WebElement}.
+     * Perform an actions on this element.
      *
-     * @return WebElement
+     * @param actions to be execute
+     * @return the result of the actions execution
      */
-    protected final WebElement webElement() {
-        return this.webElement;
+    public final T perform(final ActionExecutor<T> actions) {
+        return actions.execute(getElementActions());
     }
 
     /**
-     * Get the tag name of this element. <b>Not</b> the value of the name attribute: will return
-     * <code>"input"</code> for the element <code>&lt;input name="foo" /&gt;</code>.
+     * Get specific element actions.
      *
-     * @return The tag name of this element.
+     * @return specific element actions
      */
+    protected abstract T getElementActions();
+
+
+    @Override
     public String getTagName() {
         return this.webElement.getTagName();
+    }
+
+    @Override
+    public T click() {
+        this.webElement.click();
+        return getElementActions();
+    }
+
+    //TODO this should be used as get parameter
+    public String getValue() {
+        return this.webElement.getAttribute("value");
     }
 }

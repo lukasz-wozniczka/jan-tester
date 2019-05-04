@@ -9,12 +9,12 @@ public class TestBaseContext implements BaseContext {
     private final WebDriver webDriver;
 
     @VisibleForTesting
-    public TestBaseContext(WebDriver webDriver) {
+    public TestBaseContext(final WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
     @Override
     public WebDriver webDriver() {
-        return webDriver;
+        return this.webDriver;
     }
 }
