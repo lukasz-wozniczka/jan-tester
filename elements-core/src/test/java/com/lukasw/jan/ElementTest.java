@@ -8,8 +8,10 @@ import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.fail;
 
@@ -59,8 +61,11 @@ public class ElementTest {
         //when
         final TestElement testElement = new TestElement(webElement, baseContext);
 
-        assertThat(testElement.webElement(), sameInstance(webElement));
         assertThat(testElement.getDescription(), equalTo("Test element"));
+        testElement.click();
+
+        verify(webElement).click();
+        verifyNoMoreInteractions(webElement);
     }
 
     @Test
@@ -69,11 +74,25 @@ public class ElementTest {
         final WebElement webElement = mock(WebElement.class);
         final BaseContext baseContext = mock(BaseContext.class);
         when(webElement.getTagName()).thenReturn("h1");
-
+        when(webElement.getAttribute("id")).thenReturn("element_id");
 
         //when
         final TestElement testElement = new TestElement(webElement, baseContext);
 
         assertThat(testElement.getTagName(), equalTo("h1"));
+    }
+
+    @Test
+    public void perform_multipleActions_shouldRunAll() {
+
+        final WebElement webElement = mock(WebElement.class);
+        final BaseContext baseContext = mock(BaseContext.class);
+        when(webElement.getTagName()).thenReturn("h1");
+        when(webElement.getAttribute("id")).thenReturn("element_id");
+
+        final TestElement testElement = new TestElement(webElement, baseContext);
+
+        testElement.perform((e) -> e.click().click());
+        verify(webElement, times(2)).click();
     }
 }

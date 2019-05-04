@@ -4,7 +4,6 @@ import com.lukasw.jan.support.BaseMockServerIT;
 import com.lukasw.jan.support.ResourcesHtmlResponses;
 import com.lukasw.jan.support.TestBy;
 import com.lukasw.jan.support.TestElement;
-import org.hamcrest.Matchers;
 import org.mockserver.model.HttpRequest;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +14,8 @@ import org.testng.annotations.Test;
 
 import static com.lukasw.jan.support.ResourcesHtmlResponses.HtmlFile.TEST;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class ElementsTestIT extends BaseMockServerIT {
 
@@ -42,7 +43,9 @@ public class ElementsTestIT extends BaseMockServerIT {
 
         this.elementFactory = new SimpleElementFactory(this.testContext);
 
-        mockServerClient().when(HttpRequest.request().withPath("/test")).
+        mockServerClient()
+                .clear(HttpRequest.request().withPath("/test"))
+                .when(HttpRequest.request().withPath("/test")).
                 respond(org.mockserver.model.HttpResponse.response()
                         .withBody(ResourcesHtmlResponses.getHtmlFromResource(TEST)));
     }
@@ -57,8 +60,32 @@ public class ElementsTestIT extends BaseMockServerIT {
         final TestElement element = this.elementFactory.findBy(by);
 
         //then
-        assertThat(element, Matchers.notNullValue());
+        assertThat(element, notNullValue());
+        assertThat(element.getTagName(), equalTo("h1"));
     }
+
+    @Test
+    public void testPerformActionsOnElement() {
+        //given
+        this.drv.get(URL);
+        final TestBy button = TestBy.id("button_id");
+        final TestBy buttonClick = TestBy.id("button_click_id");
+
+        //when
+        final TestElement element = this.elementFactory.findBy(button);
+        final TestElement input = this.elementFactory.findBy(buttonClick);
+
+        element.perform((actions -> actions.click().click()));
+
+        //then
+        assertThat(input.getValue(), equalTo("2"));
+
+        //when
+        element.click();
+
+        assertThat(input.getValue(), equalTo("3"));
+    }
+
 
     @AfterClass
     public void after() {

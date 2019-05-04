@@ -21,6 +21,13 @@ public abstract class AbstractBy<T extends AbstractElement> implements HasDescri
         this.by = argumentNotNull(by, "by", getClass());
     }
 
+    /**
+     * Template factory method to create specific related web element for this locator.
+     *
+     * @param webElement  selenium webElement
+     * @param baseContext base context
+     * @return new element of type <T>
+     */
     protected abstract T createElement(WebElement webElement, BaseContext baseContext);
 
     public final By getWrapped() {
