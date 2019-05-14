@@ -24,7 +24,6 @@ install:
 script:
 - sudo ln -s /var/lib/dbus/machine-id /etc/machine-id
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-- mvn verify -P integration-test
 
 env:
 - secure: lVNXH9TzrW/xD0SPJyPd9OjKrtoLC7OFm5IaxFRMWggwQ+/U6rM1YNw6DDtk1K5dJnAOYOgTgS/MzEC5/DX27YmzqrNaq7WbR3Un5RT4igSWztUz7kC93muCQReneYg1FpVkcOWjBD7xHRxofTjEq3Y71QuDz2+ICu+NjeZPQ0FZJq3fnfkMVFrESlOqksWMGaEAYpOm32lbHPvssyLrUNzidP7yHwWEJBfIwE4nU0ia2UC/YpsCd7ryRr4Y3U9d6ThD4SviDd/ItVnBWCavVYGnpexbqF0Wv3VEQsNliQkmudY/CLlvxGklKmOQzp5PhLVGL+3UvY3uUmIZ3XImcRd9Fm5rVttlzUzLVMA/Ed+Sk4fZdHVh2IxRiTPRA4gWsn9CnEp5PMJ//U+rzv87hKVEdwwSqV1/KbAgpw3CZiUyQF1s8CO0tSBw4srZFAyo0NNR697KohPrvllHSGq2hGeiqdL98810xvF2dpEYtGCpnan/tQFyAhachk5GkFt0tXJppTcHFKbdu1osI23tDcfI5UN7Qs7djmOSTi5UoczXIFMZ/+ADMi/n/OQgDaVVUzgPdz6a1ooDuweU6eSmXwqKzXEKPxlScbDLmicHwL2W9v8ZI0tgB5pfN+giolmsAWgKrfR7vS48Y3J3yzVxklyvK48XIVUisJN6kIkUBHA=
