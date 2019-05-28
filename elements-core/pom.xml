@@ -14,10 +14,6 @@
     <artifactId>elements-core</artifactId>
     <name>Jan Elements Core</name>
 
-    <properties>
-        <mock-server-port>1080</mock-server-port>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.testng</groupId>
@@ -48,111 +44,14 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-server</artifactId>
-        </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>integration-test</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.mock-server</groupId>
-                        <artifactId>mockserver-maven-plugin</artifactId>
-                        <version>${mockserver.version}</version>
-                        <configuration>
-                            <serverPort>${mock-server-port}</serverPort>
-                            <logLevel>DEBUG</logLevel>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>process-test-classes</id>
-                                <phase>process-test-classes</phase>
-                                <goals>
-                                    <goal>runForked</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>verify</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>stopForked</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar-maven-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${build-helper-maven-plugin.version}</version>
-                <executions>
-                    <!-- Add a new source directory to our build -->
-                    <execution>
-                        <id>add-integration-test-sources</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>add-test-source</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Configures the source directory of our integration tests -->
-                            <sources>
-                                <source>src/test-it/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                    <!-- Add a new resource directory to our build -->
-                    <execution>
-                        <id>add-integration-test-resources</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>add-test-resource</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Configures the resource directory of our integration tests -->
-                            <resources>
-                                <resource>
-                                    <filtering>false</filtering>
-                                    <directory>src/test-it/resources</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

@@ -10,10 +10,12 @@
     <packaging>pom</packaging>
 
     <name>Jan Elements</name>
-    <description>Lightweight automation framework based on selenium that helps you write tests like poems</description>
+    <description>Lightweight automation library based on selenium that helps you write tests like poems</description>
 
     <modules>
         <module>elements-core</module>
+        <module>elements-collection</module>
+        <module>elements-integration-tests</module>
     </modules>
 
     <properties>
@@ -22,12 +24,14 @@
         <sonar.organization>lukasz-wozniczka-github</sonar.organization>
         <!--suppress UnresolvedMavenProperty -->
         <sonar.login>${SONAR_LOGIN_JAN}</sonar.login>
+        <mock-server-port>1080</mock-server-port>
+
 
         <selenium-java.version>3.141.59</selenium-java.version>
         <testng.version>6.14.3</testng.version>
         <hamcrest-all.version>1.3</hamcrest-all.version>
 
-        <mockito.version>1.9.5</mockito.version>
+        <mockito.version>2.27.0</mockito.version>
         <mockserver.version>5.5.1</mockserver.version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.0.9</logback.version>
@@ -50,6 +54,18 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>com.lukasw.jan</groupId>
+                <artifactId>elements-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.lukasw.jan</groupId>
+                <artifactId>elements-collection</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
@@ -59,6 +75,12 @@
                 <groupId>org.seleniumhq.selenium</groupId>
                 <artifactId>selenium-java</artifactId>
                 <version>${selenium-java.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>byte-buddy</artifactId>
+                        <groupId>net.bytebuddy</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -93,7 +115,6 @@
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-all</artifactId>
                 <version>${hamcrest-all.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -112,51 +133,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <profiles>
-        <!-- The Configuration of the development profile -->
-        <profile>
-            <id>dev</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!--
-                    Specifies the build.profile.id property that must be equal than the name of
-                    the directory that contains the profile specific configuration file.
-                    Because the name of the directory that contains the configuration file of the
-                    development profile is dev, we must set the value of the build.profile.id
-                    property to dev.
-                -->
-                <build.profile.id>dev</build.profile.id>
-                <!--
-                    Only unit tests are run when the development profile is active
-                -->
-                <skip.integration.tests>true</skip.integration.tests>
-                <run.integration.tests>false</run.integration.tests>
-                <skip.unit.tests>false</skip.unit.tests>
-            </properties>
-        </profile>
-        <!-- The Configuration of the integration-test profile -->
-        <profile>
-            <id>integration-test</id>
-            <properties>
-                <!--
-                    Specifies the build.profile.id property that must be equal than the name of
-                    the directory that contains the profile specific configuration file.
-                    Because the name of the directory that contains the configuration file of the
-                    integration-test profile is integration-test, we must set the value of the
-                    build.profile.id property to integration-test.
-                -->
-                <build.profile.id>integration-test</build.profile.id>
-                <!--
-                    Only integration tests are run when the integration-test profile is active
-                -->
-                <skip.integration.tests>false</skip.integration.tests>
-                <run.integration.tests>true</run.integration.tests>
-                <skip.unit.tests>true</skip.unit.tests>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
@@ -174,9 +150,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <!-- Skips unit tests if the value of skip.unit.tests property is true -->
-                    <skipTests>${skip.unit.tests}</skipTests>
-                    <!-- Excludes integration tests when unit tests are run -->
+                    <!-- Skips unit tests if the value of skip.unit.tests property is true --><!-- Excludes integration tests when unit tests are run -->
                     <excludes>
                         <exclude>**/IT*.java</exclude>
                     </excludes>
@@ -198,13 +172,6 @@
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
-                        <configuration>
-                            <!--
-                                Skips integration tests if the value of skip.integration.tests
-                                property is true
-                            -->
-                            <skipTests>${skip.integration.tests}</skipTests>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
